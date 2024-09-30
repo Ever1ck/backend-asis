@@ -1,23 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
-import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
-export class PersonaService {
-
-  constructor( private prisma: PrismaService ) {}
-
+export class PersonasService {
   create(createPersonaDto: CreatePersonaDto) {
-    return this.prisma.persona.create({ data: createPersonaDto });
+    return 'This action adds a new persona';
   }
 
   findAll() {
-    return this.prisma.persona.findMany();
+    return `This action returns all personas`;
   }
 
   findOne(id: number) {
-    return this.prisma.persona.findUnique({ where: { id } });
+    return `This action returns a #${id} persona`;
   }
 
   update(id: number, updatePersonaDto: UpdatePersonaDto) {

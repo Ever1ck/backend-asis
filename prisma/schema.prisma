@@ -201,13 +201,37 @@ model Asistencia {
 }
 
 
+enum TipoJust {
+  JUSTIFICACION
+  ACTIVIDADEXTRACURRICULAR
+}
+
+enum EstadoResolucion {
+  PENDIENTE
+  APROBADO
+  RECHAZADO
+}
+
+model Resolucion {
+  id                Int      @id @default(autoincrement())
+  fecha             DateTime
+  estado            EstadoResolucion
+  documento_url     String
+  created_at        DateTime @default(now())
+  updated_at        DateTime @updatedAt
+  // Relaciones
+  Justificacion     Justificacion?
+}
 
 model Justificacion {
   id                 Int      @id @default(autoincrement())
   fecha_inicio       DateTime
   fecha_fin          DateTime
+  tipo_justificacion TipoJust
   motivo             String   // Breve descripción del motivo de la justificación
-  documento_url      String?  // Enlace al documento escaneado si es necesario
+  resolucion_id      Int @unique
+  resolucion         Resolucion @relation(fields: [resolucion_id], references: [id])
+
   estado             EstadoJustificacion @default(Pendiente)
 
   estudiante_id      Int
@@ -221,6 +245,8 @@ model Justificacion {
 
   created_at         DateTime  @default(now())
   updated_at         DateTime  @updatedAt
+
+
 }
 
 enum EstadoJustificacion {
