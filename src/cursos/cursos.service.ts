@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { CreateCursoDto } from './dto/create-curso.dto';
 import { UpdateCursoDto } from './dto/update-curso.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class CursosService {
-  create(createCursoDto: CreateCursoDto) {
-    return 'This action adds a new curso';
+  
+  constructor(private prisma:PrismaService) { }
+
+  async create(createCursoDto: CreateCursoDto) {
+    const existingCurso = await this.prisma.curso.findFirst({
+      where: { area: createCursoDto.area },
+    });
+
+    if (existingCurso) {
+      throw new ConflictException('El curso ya existe');
+    }
+
+    return this.prisma.curso.create({ data: createCursoDto });
   }
 
   findAll() {
-    return `This action returns all cursos`;
+    return this.prisma.curso.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} curso`;
+    return this.prisma.curso.findUnique({where:{id}});
   }
 
   update(id: number, updateCursoDto: UpdateCursoDto) {
-    return `This action updates a #${id} curso`;
+    return this.prisma.curso.update({
+      where:{id},
+      data:updateCursoDto
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} curso`;
+    return this.prisma.curso.delete({where:{id}});
   }
 }

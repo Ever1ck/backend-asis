@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, NotFoundException } from '@nestjs/common';
 import { CursosService } from './cursos.service';
 import { CreateCursoDto } from './dto/create-curso.dto';
 import { UpdateCursoDto } from './dto/update-curso.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { CursoEntity } from './entities/curso.entity';
 
 @ApiTags('cursos')
 @Controller('cursos')
@@ -10,27 +11,45 @@ export class CursosController {
   constructor(private readonly cursosService: CursosService) {}
 
   @Post()
+  @ApiCreatedResponse({ type: CursoEntity })
   create(@Body() createCursoDto: CreateCursoDto) {
     return this.cursosService.create(createCursoDto);
   }
 
   @Get()
+  @ApiCreatedResponse({ status:200, description: 'Regresar todas las actas', type: CursoEntity })
   findAll() {
     return this.cursosService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cursosService.findOne(+id);
+  @ApiCreatedResponse({ type: CursoEntity })
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const curso = await this.cursosService.findOne(id);
+    if (!curso) {
+      throw new NotFoundException(`El curso ${id} no existe.`)
+    }
+    return curso;
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCursoDto: UpdateCursoDto) {
-    return this.cursosService.update(+id, updateCursoDto);
+  @ApiCreatedResponse({ type: CursoEntity })
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateCursoDto: UpdateCursoDto) {
+    try {
+      return await this.cursosService.update(id, updateCursoDto);
+    } catch (error) {
+      throw new NotFoundException(`El curso ${id} no existe.`)
+    }
+
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cursosService.remove(+id);
+  @ApiCreatedResponse({ type: CursoEntity })
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    try {
+      return await this.cursosService.remove(id);
+    } catch (error) {
+      throw new NotFoundException(`El curso ${id} no existe.`)
+    }
   }
 }

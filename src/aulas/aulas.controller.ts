@@ -8,7 +8,7 @@ import { AulaEntity } from './entities/aula.entity';
 @Controller('aulas')
 @ApiTags('aulas')
 export class AulasController {
-  constructor(private readonly aulasService: AulasService) {}
+  constructor(private readonly aulasService: AulasService) { }
 
   @Post()
   @ApiCreatedResponse({ type: AulaEntity })
@@ -17,7 +17,7 @@ export class AulasController {
   }
 
   @Get()
-  @ApiCreatedResponse({ type: AulaEntity, isArray: true })
+  @ApiCreatedResponse({ status:200, description: 'Regresar todas las actas', type: AulaEntity })
   findAll() {
     return this.aulasService.findAll();
   }
@@ -26,7 +26,6 @@ export class AulasController {
   @ApiCreatedResponse({ type: AulaEntity, isArray: true })
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const aulaFound = await this.aulasService.findOne(id);
-
     if (!aulaFound) {
       throw new NotFoundException(`El aula ${id} no existe.`);
     }
@@ -35,13 +34,24 @@ export class AulasController {
 
   @Patch(':id')
   @ApiCreatedResponse({ type: AulaEntity })
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateAulaDto: UpdateAulaDto) {
-    return this.aulasService.update(id, updateAulaDto);
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateAulaDto: UpdateAulaDto) {
+
+    try {
+      return await this.aulasService.update(id, updateAulaDto);
+    }
+    catch (error) {
+      throw new NotFoundException(`El aula ${id} no existe para actualizar.`);
+    }
   }
 
   @Delete(':id')
   @ApiCreatedResponse({ type: AulaEntity })
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.aulasService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    try {
+      return await this.aulasService.remove(id);
+    }
+    catch (error) {
+      throw new NotFoundException(`El aula ${id} no existe para eliminar.`);
+    }
   }
 }

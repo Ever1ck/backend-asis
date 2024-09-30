@@ -101,7 +101,7 @@ enum GradoAc {
   Quinto
 }
 enum TurnoAc {
-  Manana
+  Dia
   Tarde
 }
 
@@ -124,24 +124,14 @@ model GradoAcademico {
 
 model Curso {
   id                  Int      @id @default(autoincrement())
-  area                String
+  area                String   @unique
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
 
   // Relaciones
-  TurnoCurso          TurnoCurso[]
   DocenteCurso        DocenteCurso[]
   Horario             Horario[]  // Cambio: muchos horarios pueden estar relacionados con un curso
   asistencias         Asistencia[]
-}
-
-model TurnoCurso {
-  id                  Int      @id @default(autoincrement())
-  curso_id            Int
-  curso               Curso    @relation(fields: [curso_id], references: [id])  // Relación uno a uno
-  turno               TurnoAc
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
 }
 
 model DocenteCurso {

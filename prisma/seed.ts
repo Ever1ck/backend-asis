@@ -58,7 +58,7 @@ async function main() {
     data: {
       grado: 'Primero',
       seccion: 'A',
-      turno: 'Manana',
+      turno: 'Dia',
       tutor: {
         connect: { id: usuario1.id }, // Asignar a Juan como tutor
       },
