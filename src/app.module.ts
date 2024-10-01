@@ -14,9 +14,10 @@ import { AsistenciasModule } from './asistencias/asistencias.module';
 import { JustificacionesModule } from './justificaciones/justificaciones.module';
 import { ResolucionesModule } from './resoluciones/resoluciones.module';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [PersonasModule, UsersModule, EstudiantesModule, AulasModule, GradosacademicosModule, CursosModule, TurnocursosModule, DocentesModule, DocentescursosModule, HorariosModule, AsistenciasModule, JustificacionesModule, ResolucionesModule, NotificacionesModule],
+  imports: [PersonasModule, UsersModule, EstudiantesModule, AulasModule, GradosacademicosModule, CursosModule, TurnocursosModule, DocentesModule, DocentescursosModule, HorariosModule, AsistenciasModule, JustificacionesModule, ResolucionesModule, NotificacionesModule, AuthModule],
   controllers: [],
 })
 export class AppModule {}

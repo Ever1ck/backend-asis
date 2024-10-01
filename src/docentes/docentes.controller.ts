@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { DocentesService } from './docentes.service';
 import { CreateDocenteDto } from './dto/create-docente.dto';
 import { UpdateDocenteDto } from './dto/update-docente.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { DocenteEntity } from './entities/docente.entity';
 
 @ApiTags('docentes')
 @Controller('docentes')
@@ -10,27 +11,33 @@ export class DocentesController {
   constructor(private readonly docentesService: DocentesService) {}
 
   @Post()
-  create(@Body() createDocenteDto: CreateDocenteDto) {
-    return this.docentesService.create(createDocenteDto);
+  @ApiCreatedResponse({ type: DocenteEntity })
+  async create(@Body() createDocenteDto: CreateDocenteDto) {
+    return new DocenteEntity(await this.docentesService.create(createDocenteDto));
   }
 
   @Get()
-  findAll() {
-    return this.docentesService.findAll();
+  @ApiCreatedResponse({ type: DocenteEntity, isArray: true })
+  async findAll() {
+    const docente = await this.docentesService.findAll()
+    return docente.map(docente => new DocenteEntity(docente));
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.docentesService.findOne(+id);
+  @ApiCreatedResponse({ type: DocenteEntity })
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return new DocenteEntity(await this.docentesService.findOne(id));
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDocenteDto: UpdateDocenteDto) {
-    return this.docentesService.update(+id, updateDocenteDto);
+  @ApiCreatedResponse({ type: DocenteEntity })
+  async update(@Param('id', ParseIntPipe) id: number, @Body() updateDocenteDto: UpdateDocenteDto) {
+    return new DocenteEntity(await this.docentesService.update(id, updateDocenteDto));
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.docentesService.remove(+id);
+  @ApiCreatedResponse({ type: DocenteEntity })
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return new DocenteEntity(await this.docentesService.remove(id));
   }
 }
