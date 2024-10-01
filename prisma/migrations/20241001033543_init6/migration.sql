@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Asistencia" ALTER COLUMN "fecha" SET DEFAULT CURRENT_TIMESTAMP;

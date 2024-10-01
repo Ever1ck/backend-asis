@@ -179,7 +179,7 @@ enum EstadoAsis {
 
 model Asistencia {
   id                 Int      @id @default(autoincrement())
-  fecha              DateTime
+  fecha              DateTime @default(now())
   
   curso_id           Int
   curso              Curso @relation(fields: [curso_id], references: [id])
