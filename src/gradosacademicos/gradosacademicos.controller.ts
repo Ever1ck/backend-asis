@@ -5,7 +5,7 @@ import { UpdateGradosacademicoDto } from './dto/update-gradosacademico.dto';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { GradosacademicoEntity } from './entities/gradosacademico.entity';
 
-@ApiTags('graduadosacademicos')
+@ApiTags('gradosacademicos')
 @Controller('gradosacademicos')
 export class GradosacademicosController {
   constructor(private readonly gradosacademicosService: GradosacademicosService) {}

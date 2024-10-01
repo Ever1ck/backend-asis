@@ -8,8 +8,14 @@ export class EstudiantesService {
 
   constructor(private prisma:PrismaService) {}
 
-  create(createEstudianteDto: CreateEstudianteDto) {
-    return 'This action adds a new estudiante';
+  async create(createEstudianteDto: CreateEstudianteDto) {
+    const estudianteexist = await this.prisma.estudiante.findFirst( { 
+      where: {
+        codigo_matricula: createEstudianteDto.codigo_matricula,
+        persona_id: createEstudianteDto.persona_id
+      }
+    } );
+    return this.prisma.estudiante.create( { data: createEstudianteDto } );
   }
 
   findAll() {

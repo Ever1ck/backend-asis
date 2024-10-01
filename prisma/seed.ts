@@ -29,6 +29,18 @@ async function main() {
       direccion: 'Calle Falsa 456',
     },
   });
+  const persona3 = await prisma.persona.create({
+    data: {
+      dni: '72496995',
+      nombres: 'Brandon Everick',
+      apellido_paterno: 'Puma',
+      apellido_materno: 'Mestas',
+      fecha_nacimiento: new Date('2002-07-04'),
+      sexo: 'Masculino',
+      telefono: '970697466',
+      direccion: 'Av. El Maestro 556',
+    },
+  });
 
   // Crear Usuarios
   const usuario1 = await prisma.usuario.create({
@@ -49,6 +61,17 @@ async function main() {
       role: 'Secretaria',
       Persona: {
         connect: { id: persona2.id },
+      },
+    },
+  });
+
+  const usuario3 = await prisma.usuario.create({
+    data: {
+      email: 'ever1ever14@gmail.com',
+      password: '123456',
+      role: 'Docente',
+      Persona: {
+        connect: { id: persona3.id },
       },
     },
   });

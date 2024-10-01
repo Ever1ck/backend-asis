@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "SexoPersona" AS ENUM ('Masculino', 'Femenino');
+
+-- CreateEnum
 CREATE TYPE "Role" AS ENUM ('Docente', 'Auxiliar', 'Secretaria', 'Director', 'Administrador');
 
 -- CreateEnum
@@ -32,7 +35,7 @@ CREATE TABLE "Persona" (
     "telefono" TEXT,
     "direccion" TEXT,
     "fecha_nacimiento" TIMESTAMP(3) NOT NULL,
-    "sexo" TEXT NOT NULL,
+    "sexo" "SexoPersona" NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -127,7 +130,7 @@ CREATE TABLE "Horario" (
 -- CreateTable
 CREATE TABLE "Asistencia" (
     "id" SERIAL NOT NULL,
-    "fecha" TIMESTAMP(3) NOT NULL,
+    "fecha" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "curso_id" INTEGER NOT NULL,
     "estudiante_id" INTEGER NOT NULL,
     "estadoAsistencia" "EstadoAsis" NOT NULL,

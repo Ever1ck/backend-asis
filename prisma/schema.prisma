@@ -13,7 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Persona {
   id                  Int      @id @default(autoincrement())
   dni                 String   @unique @db.VarChar(8)
@@ -23,12 +22,17 @@ model Persona {
   telefono            String?
   direccion           String?
   fecha_nacimiento    DateTime
-  sexo                String
+  sexo                SexoPersona
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
   // Relaciones
   Usuario             Usuario?
   Estudiante          Estudiante?
+}
+
+enum SexoPersona {
+  Masculino
+  Femenino
 }
 
 
