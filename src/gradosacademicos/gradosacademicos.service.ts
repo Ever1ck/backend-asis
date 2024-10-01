@@ -8,9 +8,9 @@ export class GradosacademicosService {
 
   constructor(private prisma:PrismaService) { }
 
-  create(createGradosacademicoDto: CreateGradosacademicoDto) {
+  async create(createGradosacademicoDto: CreateGradosacademicoDto) {
 
-    const gradoacademicoexistente = this.prisma.gradoAcademico.findFirst({
+    const gradoacademicoexistente = await this.prisma.gradoAcademico.findFirst({
       where: { 
         grado: createGradosacademicoDto.grado, 
         seccion: createGradosacademicoDto.seccion,
@@ -36,6 +36,13 @@ export class GradosacademicosService {
                 apellido_materno: true,
               },
             },
+          },
+        },
+        aula: {
+          select: {
+            edificio: true,
+            piso: true,
+            numeroAula: true,
           },
         },
       },
