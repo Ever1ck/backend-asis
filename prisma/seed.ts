@@ -42,6 +42,31 @@ async function main() {
     },
   });
 
+  const persona4 = await prisma.persona.create({
+    data: {
+      dni: '72712345',
+      nombres: 'Johan',
+      apellido_paterno: 'Luque',
+      apellido_materno: 'Laura',
+      fecha_nacimiento: new Date('2002-05-15'),
+      sexo: 'Masculino',
+      telefono: '987654123',
+      direccion: 'Av. Castillo 123',
+    },
+  });
+  const persona5 = await prisma.persona.create({
+    data: {
+      dni: '72457896',
+      nombres: 'Franco',
+      apellido_paterno: 'Lauda',
+      apellido_materno: 'Laura',
+      fecha_nacimiento: new Date('2002-06-15'),
+      sexo: 'Masculino',
+      telefono: '987456123',
+      direccion: 'Av. El Sol 123',
+    },
+  });
+
   // Crear Usuarios
   const usuario1 = await prisma.usuario.create({
     data: {
@@ -88,7 +113,24 @@ async function main() {
       aula: {
         create: {
           edificio: 1,
-          piso: 2,
+          piso: 1,
+          numeroAula: 101,
+        },
+      },
+    },
+  });
+  const grado2 = await prisma.gradoAcademico.create({
+    data: {
+      grado: 'Primero',
+      seccion: 'B',
+      turno: 'Dia',
+      tutor: {
+        connect: { id: usuario3.id }, // Asignar a Juan como tutor
+      },
+      aula: {
+        create: {
+          edificio: 1,
+          piso: 1,
           numeroAula: 101,
         },
       },
@@ -100,7 +142,7 @@ async function main() {
     data: {
       codigo_matricula: '2024-0001',
       Persona: {
-        connect: { id: persona1.id },
+        connect: { id: persona4.id },
       },
       GradoAcademico: {
         connect: { id: grado1.id },
@@ -112,7 +154,7 @@ async function main() {
     data: {
       codigo_matricula: '2024-0002',
       Persona: {
-        connect: { id: persona2.id },
+        connect: { id: persona5.id },
       },
       GradoAcademico: {
         connect: { id: grado1.id },
@@ -123,7 +165,19 @@ async function main() {
   // Crear Cursos
   const curso1 = await prisma.curso.create({
     data: {
-      area: 'Matemáticas',
+      area: 'Matemática',
+    },
+  });
+
+  const curso2 = await prisma.curso.create({
+    data: {
+      area: 'Comunicación',
+    },
+  });
+
+  const curso3 = await prisma.curso.create({
+    data: {
+      area: 'Educación Física',
     },
   });
 
